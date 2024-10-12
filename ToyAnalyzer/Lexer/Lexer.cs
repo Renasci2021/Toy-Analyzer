@@ -1,4 +1,13 @@
+using System.Text.RegularExpressions;
+
 namespace ToyAnalyzer.Lexer;
+
+internal record Token(string Type, string Value, int Line, int Column);
+
+internal record LexerRule(string TokenType, string Pattern)
+{
+    public Regex RegexPattern { get; } = new Regex(Pattern, RegexOptions.Compiled);
+}
 
 internal class Lexer(string source, List<LexerRule> rules)
 {
