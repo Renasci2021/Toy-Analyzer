@@ -31,7 +31,7 @@ internal class Lexer(string source, List<LexerRule> rules)
         // 匹配规则
         foreach (var rule in _rules)
         {
-            var match = rule.Pattern.Match(_source, _position);
+            var match = rule.RegexPattern.Match(_source, _position);
             if (match.Success && match.Index == _position)
             {
                 var token = new Token(rule.TokenType, match.Value, _line, _column);

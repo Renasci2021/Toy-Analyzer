@@ -8,20 +8,12 @@ class Program
     {
         var source = "let x = 10;";
 
-        var rules = new List<LexerRule>
-        {
-            new("LET", "let"),
-            new("IDENTIFIER", "[a-zA-Z_][a-zA-Z0-9_]*"),
-            new("ASSIGN", "="),
-            new("NUMBER", "[0-9]+"),
-            new("SEMICOLON", ";"),
-        };
-
+        var rules = LexerConfigLoader.LoadFromEmbeddedResource("ToyAnalyzer.Config.lexer_rules.json");
         var lexer = new Lexer.Lexer(source, rules);
-        Token token;
+
         while (true)
         {
-            token = lexer.NextToken();
+            var token = lexer.NextToken();
 
             if (token.Type == "EOF")
             {

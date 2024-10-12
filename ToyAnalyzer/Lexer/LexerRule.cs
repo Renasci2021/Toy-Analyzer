@@ -2,8 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace ToyAnalyzer.Lexer;
 
-internal class LexerRule(string tokenType, string pattern)
+internal record LexerRule(string TokenType, string Pattern)
 {
-    public string TokenType { get; } = tokenType;
-    public Regex Pattern { get; } = new(pattern, RegexOptions.Compiled);
+    public Regex RegexPattern { get; } = new Regex(Pattern, RegexOptions.Compiled);
 }
