@@ -12,6 +12,19 @@ internal class LexerConfigLoader
 
         using var reader = new StreamReader(stream);
         var jsonContent = reader.ReadToEnd();
-        return JsonSerializer.Deserialize<List<LexerRule>>(jsonContent) ?? throw new Exception("Failed to deserialize JSON");
+
+        using var jsonDocument = JsonDocument.Parse(jsonContent);
+        var LexerRules = new List<LexerRule>();
+
+        foreach (var element in jsonDocument.RootElement.EnumerateArray())
+        {
+            var tokenType = element.GetProperty("TokenType").GetString();
+            var regexPattern = element.GetProperty("Pattern").GetString();
+            var tokenCategory = element.GetProperty("TokenCategory").GetString();
+
+            LexerRules.Add(new LexerRule(tokenType!, regexPattern!, tokenCategory!));
+        }
+
+        return LexerRules;
     }
 }

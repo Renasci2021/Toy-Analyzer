@@ -1,22 +1,20 @@
-using System.Text.RegularExpressions;
-
 namespace ToyAnalyzer.Lexer;
 
-internal record Token(string Type, string Value, int Line, int Column);
-
-internal record LexerRule(string TokenType, string Pattern)
+internal class Lexer
 {
-    public Regex RegexPattern { get; } = new Regex(Pattern, RegexOptions.Compiled);
-}
-
-internal class Lexer(string source, List<LexerRule> rules)
-{
-    private readonly string _source = source;
-    private readonly List<LexerRule> _rules = rules;
+    private readonly string _source;
+    private readonly List<LexerRule> _rules;
 
     private int _position = 0;
     private int _line = 1;
     private int _column = 1;
+
+    public Lexer(string source, List<LexerRule> rules)
+    {
+        _source = source;
+        _rules = rules;
+        _rules.Sort((a, b) => a.TokenCategory.CompareTo(b.TokenCategory));
+    }
 
     /// <summary>
     /// 获取下一个 Token
@@ -40,7 +38,7 @@ internal class Lexer(string source, List<LexerRule> rules)
         // 匹配规则
         foreach (var rule in _rules)
         {
-            var match = rule.RegexPattern.Match(_source, _position);
+            var match = rule.Pattern.Match(_source, _position);
             if (match.Success && match.Index == _position)
             {
                 var token = new Token(rule.TokenType, match.Value, _line, _column);
