@@ -1,27 +1,27 @@
 [
     {
         "TokenType": "input",
-        "Pattern": "input",
+        "Pattern": "\\binput\\b",
         "TokenCategory": "Keyword"
     },
     {
         "TokenType": "print",
-        "Pattern": "print",
+        "Pattern": "\\bprint\\b",
         "TokenCategory": "Keyword"
     },
     {
         "TokenType": "var",
-        "Pattern": "var",
+        "Pattern": "\\bvar\\b",
         "TokenCategory": "Keyword"
     },
     {
         "TokenType": "if",
-        "Pattern": "if",
+        "Pattern": "\\bif\\b",
         "TokenCategory": "Keyword"
     },
     {
         "TokenType": "while",
-        "Pattern": "while",
+        "Pattern": "\\bwhile\\b",
         "TokenCategory": "Keyword"
     },
     {
@@ -36,7 +36,7 @@
     },
     {
         "TokenType": "number",
-        "Pattern": "-?[0-9]+",
+        "Pattern": "[1-9][0-9]*|0",
         "TokenCategory": "Literal"
     },
     {

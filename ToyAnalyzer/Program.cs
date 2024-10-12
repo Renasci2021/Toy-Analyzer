@@ -52,7 +52,7 @@ class Program
                 break;
             }
 
-            Console.WriteLine($"({token.Type}, {token.Value})");
+            Console.WriteLine($"('{token.Type}', '{token.Value}')");
         }
     }
 }
