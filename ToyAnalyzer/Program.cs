@@ -6,11 +6,43 @@ class Program
 {
     static void Main(string[] args)
     {
-        var source = "let x = 10;";
+        if (!TryParseArgs(args, out var filename)) return;
 
+        var source = File.ReadAllText(filename);
+        var lexer = CreateLexer(source);
+
+        ProcessTokens(lexer);
+    }
+
+    private static bool TryParseArgs(string[] args, out string filename)
+    {
+        filename = string.Empty;
+
+        if (args.Length != 1)
+        {
+            Console.WriteLine("Usage: ToyAnalyzer <source file>");
+            return false;
+        }
+
+        filename = args[0];
+
+        if (!File.Exists(filename))
+        {
+            Console.WriteLine($"File not found: {filename}");
+            return false;
+        }
+
+        return true;
+    }
+
+    private static Lexer.Lexer CreateLexer(string source)
+    {
         var rules = LexerConfigLoader.LoadFromEmbeddedResource("ToyAnalyzer.Config.lexer_rules.json");
-        var lexer = new Lexer.Lexer(source, rules);
+        return new Lexer.Lexer(source, rules);
+    }
 
+    private static void ProcessTokens(Lexer.Lexer lexer)
+    {
         while (true)
         {
             var token = lexer.NextToken();
@@ -20,7 +52,7 @@ class Program
                 break;
             }
 
-            Console.WriteLine($"Token: {token.Type}, Value: {token.Value}, Line: {token.Line}, Column: {token.Column}");
+            Console.WriteLine($"({token.Type}, {token.Value})");
         }
     }
 }

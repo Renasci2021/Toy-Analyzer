@@ -23,16 +23,17 @@ internal class Lexer
     /// <exception cref="Exception">无法识别的字符</exception>
     public Token NextToken()
     {
-        if (_position >= _source.Length)
-        {
-            return new Token("EOF", "", _line, _column);
-        }
-
         // 跳过空白字符
         while (_position < _source.Length && char.IsWhiteSpace(_source[_position]))
         {
             UpdatePosition(_source[_position].ToString());
             _position++;
+        }
+
+        // 到达文件末尾
+        if (_position >= _source.Length)
+        {
+            return new Token("EOF", "", _line, _column);
         }
 
         // 匹配规则
