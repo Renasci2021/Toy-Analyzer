@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Config\lexer_rules.json" />
+    <EmbeddedResource Include="Config\grammar_rules.json" />
   </ItemGroup>
 
 </Project>

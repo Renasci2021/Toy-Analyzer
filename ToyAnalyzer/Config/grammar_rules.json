@@ -1,0 +1,225 @@
+[
+    {
+        "left": "PROGRAM",
+        "right": [
+            [
+                "STATEMENT",
+                "PROGRAM_STATEMENT"
+            ]
+        ]
+    },
+    {
+        "left": "PROGRAM_STATEMENT",
+        "right": [
+            [
+                "STATEMENT",
+                "PROGRAM"
+            ],
+            [
+                "empty"
+            ]
+        ]
+    },
+    {
+        "left": "STATEMENT",
+        "right": [
+            [
+                "INPUT_STMT"
+            ],
+            [
+                "PRINT_STMT"
+            ],
+            [
+                "DECLARATION_STMT"
+            ],
+            [
+                "ASSIGNMENT_STMT"
+            ],
+            [
+                "IF_STMT"
+            ],
+            [
+                "WHILE_STMT"
+            ]
+        ]
+    },
+    {
+        "left": "INPUT_STMT",
+        "right": [
+            [
+                "input",
+                "identifier",
+                "semicolon"
+            ]
+        ]
+    },
+    {
+        "left": "PRINT_STMT",
+        "right": [
+            [
+                "print",
+                "PRINT_STMT_TAIL"
+            ]
+        ]
+    },
+    {
+        "left": "PRINT_STMT_TAIL",
+        "right": [
+            [
+                "identifier",
+                "semicolon"
+            ],
+            [
+                "string_literal",
+                "semicolon"
+            ]
+        ]
+    },
+    {
+        "left": "DECLARATION_STMT",
+        "right": [
+            [
+                "var",
+                "identifier",
+                "semicolon"
+            ]
+        ]
+    },
+    {
+        "left": "ASSIGNMENT_STMT",
+        "right": [
+            [
+                "identifier",
+                "assign",
+                "EXPRESSION",
+                "semicolon"
+            ]
+        ]
+    },
+    {
+        "left": "IF_STMT",
+        "right": [
+            [
+                "if",
+                "lparen",
+                "CONDITION",
+                "rparen",
+                "lbrace",
+                "PROGRAM",
+                "rbrace"
+            ]
+        ]
+    },
+    {
+        "left": "WHILE_STMT",
+        "right": [
+            [
+                "while",
+                "lparen",
+                "CONDITION",
+                "rparen",
+                "lbrace",
+                "PROGRAM",
+                "rbrace"
+            ]
+        ]
+    },
+    {
+        "left": "EXPRESSION",
+        "right": [
+            [
+                "TERM",
+                "EXPRESSION_PRIME"
+            ]
+        ]
+    },
+    {
+        "left": "EXPRESSION_PRIME",
+        "right": [
+            [
+                "plus",
+                "TERM",
+                "EXPRESSION_PRIME"
+            ],
+            [
+                "minus",
+                "TERM",
+                "EXPRESSION_PRIME"
+            ],
+            [
+                "empty"
+            ]
+        ]
+    },
+    {
+        "left": "TERM",
+        "right": [
+            [
+                "FACTOR",
+                "TERM_PRIME"
+            ]
+        ]
+    },
+    {
+        "left": "TERM_PRIME",
+        "right": [
+            [
+                "multiply",
+                "FACTOR",
+                "TERM_PRIME"
+            ],
+            [
+                "divide",
+                "FACTOR",
+                "TERM_PRIME"
+            ],
+            [
+                "empty"
+            ]
+        ]
+    },
+    {
+        "left": "FACTOR",
+        "right": [
+            [
+                "identifier"
+            ],
+            [
+                "number"
+            ],
+            [
+                "minus",
+                "number"
+            ],
+            [
+                "lparen",
+                "EXPRESSION",
+                "rparen"
+            ]
+        ]
+    },
+    {
+        "left": "CONDITION",
+        "right": [
+            [
+                "EXPRESSION",
+                "CONDITION_OP",
+                "EXPRESSION"
+            ]
+        ]
+    },
+    {
+        "left": "CONDITION_OP",
+        "right": [
+            [
+                "equal"
+            ],
+            [
+                "greater"
+            ],
+            [
+                "less"
+            ]
+        ]
+    }
+]
