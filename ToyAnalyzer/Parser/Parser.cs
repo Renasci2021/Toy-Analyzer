@@ -1,61 +1,75 @@
+using System.Xml.Linq;
 using ToyAnalyzer.Lexer;
 
 namespace ToyAnalyzer.Parser;
 
-internal class Parser(Lexer.Lexer lexer, Dictionary<string, GrammarRule> rules, Dictionary<(string, string), List<string>> parseTable)
+internal class Parser(Lexer.Lexer lexer, Dictionary<(string, string), List<string>> parseTable)
 {
-    private readonly Dictionary<string, GrammarRule> _rules = rules;
     private readonly Lexer.Lexer _lexer = lexer;
     private readonly Dictionary<(string, string), List<string>> _parseTable = parseTable;
 
-    public void Parse()
+    public XElement Parse()
     {
-        Stack<string> _stack = new(["PROGRAM"]);
+        XElement root = new("PARSER");
+
+        Stack<(string, XElement)> stack = [];
+        stack.Push(("PROGRAM", root));
+
         Token currentToken = _lexer.NextToken();
 
-        while (_stack.Count > 0)
+        while (stack.Count > 0)
         {
-            var top = _stack.Pop();
+            var (top, parentElement) = stack.Pop();
 
-            // 如果 top 是非终结符，查找对应的产生式
-            if (_rules.ContainsKey(top))
+            if (IsTerminal(top))
             {
-                if (_parseTable.TryGetValue((top, currentToken.Type), out var production))
+                if (top == currentToken.Type)
                 {
-                    if (production.Count == 1 && production[0] == "empty") continue;
+                    var matchedElement = new XElement(top, currentToken.Value);
 
-                    for (int i = production.Count - 1; i >= 0; i--)
-                    {
-                        _stack.Push(production[i]);
-                    }
+                    parentElement.Add(matchedElement);
+
+                    currentToken = _lexer.NextToken();
                 }
                 else
                 {
-                    Console.WriteLine($"Syntax error: {currentToken.Type}: {currentToken.Value}");
-                    break;
+                    throw new Exception($"Syntax error: expected {top}, found {currentToken.Type}");
                 }
             }
-            // 如果 top 是终结符，匹配当前 token
-            else if (top == currentToken.Type)
-            {
-                Console.WriteLine($"Matched: {currentToken.Type}: {currentToken.Value}");
-                currentToken = _lexer.NextToken();
-            }
-            // 如果终结符和当前 token 不匹配，报错
             else
             {
-                Console.WriteLine($"Syntax error: {currentToken.Type}: {currentToken.Value}");
-                break;
+                if (_parseTable.TryGetValue((top, currentToken.Type), out var production))
+                {
+                    // Skip empty productions
+                    if (production[0] == "empty")
+                    {
+                        continue;
+                    }
+
+                    // Adjust xml tree for productions that end with REMAINING
+                    if (top.EndsWith("REMAINING"))
+                    {
+                        production.AsEnumerable().Reverse().ToList().ForEach(symbol => stack.Push((symbol, parentElement)));
+                        continue;
+                    }
+
+                    var nonTerminalElement = new XElement(top);
+                    parentElement.Add(nonTerminalElement);
+
+                    production.AsEnumerable().Reverse().ToList().ForEach(symbol => stack.Push((symbol, nonTerminalElement)));
+                }
+                else
+                {
+                    throw new Exception($"Syntax error: no production for {top} -> {currentToken.Type}");
+                }
             }
         }
 
-        if (_stack.Count > 0 || currentToken.Type != "EOF")
-        {
-            Console.WriteLine("Parsing failed");
-        }
-        else
-        {
-            Console.WriteLine("Syntax analysis completed");
-        }
+        return root;
+    }
+
+    private static bool IsTerminal(string symbol)
+    {
+        return char.IsLower(symbol[0]);
     }
 }

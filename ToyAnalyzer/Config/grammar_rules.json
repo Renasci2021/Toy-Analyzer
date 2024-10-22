@@ -3,17 +3,7 @@
         "left": "PROGRAM",
         "right": [
             [
-                "STATEMENT",
-                "PROGRAM_STATEMENT"
-            ]
-        ]
-    },
-    {
-        "left": "PROGRAM_STATEMENT",
-        "right": [
-            [
-                "STATEMENT",
-                "PROGRAM"
+                "STATEMENT_LIST"
             ],
             [
                 "empty"
@@ -21,25 +11,63 @@
         ]
     },
     {
-        "left": "STATEMENT",
+        "left": "STATEMENT_LIST",
         "right": [
             [
-                "INPUT_STMT"
+                "INPUT_STMT",
+                "STATEMENT_LIST_REMAINING"
             ],
             [
-                "PRINT_STMT"
+                "PRINT_STMT",
+                "STATEMENT_LIST_REMAINING"
             ],
             [
-                "DECLARATION_STMT"
+                "DECLARATION_STMT",
+                "STATEMENT_LIST_REMAINING"
             ],
             [
-                "ASSIGNMENT_STMT"
+                "ASSIGNMENT_STMT",
+                "STATEMENT_LIST_REMAINING"
             ],
             [
-                "IF_STMT"
+                "IF_STMT",
+                "STATEMENT_LIST_REMAINING"
             ],
             [
-                "WHILE_STMT"
+                "WHILE_STMT",
+                "STATEMENT_LIST_REMAINING"
+            ]
+        ]
+    },
+    {
+        "left": "STATEMENT_LIST_REMAINING",
+        "right": [
+            [
+                "INPUT_STMT",
+                "STATEMENT_LIST_REMAINING"
+            ],
+            [
+                "PRINT_STMT",
+                "STATEMENT_LIST_REMAINING"
+            ],
+            [
+                "DECLARATION_STMT",
+                "STATEMENT_LIST_REMAINING"
+            ],
+            [
+                "ASSIGNMENT_STMT",
+                "STATEMENT_LIST_REMAINING"
+            ],
+            [
+                "IF_STMT",
+                "STATEMENT_LIST_REMAINING"
+            ],
+            [
+                "WHILE_STMT",
+                "STATEMENT_LIST_REMAINING"
+            ],
+            [
+                "empty"
             ]
         ]
     },
@@ -58,12 +86,12 @@
         "right": [
             [
                 "print",
-                "PRINT_STMT_TAIL"
+                "PRINT_STMT_REMAINING"
             ]
         ]
     },
     {
-        "left": "PRINT_STMT_TAIL",
+        "left": "PRINT_STMT_REMAINING",
         "right": [
             [
                 "identifier",
@@ -129,22 +157,22 @@
         "right": [
             [
                 "TERM",
-                "EXPRESSION_PRIME"
+                "EXPRESSION_REMAINING"
             ]
         ]
     },
     {
-        "left": "EXPRESSION_PRIME",
+        "left": "EXPRESSION_REMAINING",
         "right": [
             [
                 "plus",
                 "TERM",
-                "EXPRESSION_PRIME"
+                "EXPRESSION_REMAINING"
             ],
             [
                 "minus",
                 "TERM",
-                "EXPRESSION_PRIME"
+                "EXPRESSION_REMAINING"
             ],
             [
                 "empty"
@@ -156,22 +184,22 @@
         "right": [
             [
                 "FACTOR",
-                "TERM_PRIME"
+                "TERM_REMAINING"
             ]
         ]
     },
     {
-        "left": "TERM_PRIME",
+        "left": "TERM_REMAINING",
         "right": [
             [
                 "multiply",
                 "FACTOR",
-                "TERM_PRIME"
+                "TERM_REMAINING"
             ],
             [
                 "divide",
                 "FACTOR",
-                "TERM_PRIME"
+                "TERM_REMAINING"
             ],
             [
                 "empty"

@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace ToyAnalyzer.Lexer;
 
-internal class LexerConfigLoader
+internal static class LexerConfigLoader
 {
     public static List<LexerRule> LoadFromEmbeddedResource(string resourceName)
     {

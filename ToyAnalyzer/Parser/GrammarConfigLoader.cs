@@ -3,9 +3,9 @@ using System.Text.Json;
 
 namespace ToyAnalyzer.Parser;
 
-internal class GrammarConfigLoader
+internal static class GrammarConfigLoader
 {
-    public static Dictionary<string, GrammarRule> LoadFromEmbeddedResource(string resourceName)
+    public static List<GrammarRule> LoadFromEmbeddedResource(string resourceName)
     {
         var assembly = Assembly.GetExecutingAssembly();
         using var stream = assembly.GetManifestResourceStream(resourceName) ?? throw new Exception($"Resource '{resourceName}' not found");
@@ -14,7 +14,7 @@ internal class GrammarConfigLoader
         var jsonContent = reader.ReadToEnd();
 
         using var jsonDocument = JsonDocument.Parse(jsonContent);
-        var grammarRules = new Dictionary<string, GrammarRule>();
+        var grammarRules = new List<GrammarRule>();
 
         foreach (var element in jsonDocument.RootElement.EnumerateArray())
         {
@@ -30,7 +30,7 @@ internal class GrammarConfigLoader
                 right.Add(production);
             }
             var grammarRule = new GrammarRule(left!, right);
-            grammarRules.Add(left!, grammarRule);
+            grammarRules.Add(grammarRule);
         }
 
         return grammarRules;

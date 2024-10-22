@@ -33,7 +33,7 @@ internal class Lexer
         // 到达文件末尾
         if (_position >= _source.Length)
         {
-            return new Token("EOF", "", _line, _column);
+            return new Token("$", "EOF", _line, _column);
         }
 
         // 匹配规则

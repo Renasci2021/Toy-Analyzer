@@ -5,40 +5,44 @@ namespace ToyAnalyzer;
 
 class Program
 {
-    readonly static string source = @"
-
-var x;
-var y;
-var z;
-input x;
-z = -5;
-if (x > 5) {
-   y = x * (x / 2 + 10) - z;
-}
-print ""After if, finished!"";
-
-    ";
-
     static void Main(string[] args)
     {
-        // if (!TryParseArgs(args, out var filename)) return;
-        // var source = File.ReadAllText(filename);
+        if (!TryParseArgs(args, out var filename))
+        {
+            return;
+        }
+
+        var source = filename != null ? File.ReadAllText(filename) : Console.In.ReadToEnd();
         var parser = CreateParser(source);
-        parser.Parse();
+
+        try
+        {
+            var xml = parser.Parse();
+            xml.Save(Console.Out);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Parsing failed!");
+            Console.WriteLine(ex.Message);
+        }
     }
 
-    private static bool TryParseArgs(string[] args, out string filename)
+    private static bool TryParseArgs(string[] args, out string? filename)
     {
-        filename = string.Empty;
-
-        if (args.Length != 1)
+        if (args.Length == 0)
         {
-            Console.WriteLine("Usage: ToyAnalyzer <source file>");
+            filename = null;
+            return true;
+        }
+
+        if (args.Length > 1)
+        {
+            Console.WriteLine("Too many arguments!");
+            filename = null;
             return false;
         }
 
         filename = args[0];
-
         if (!File.Exists(filename))
         {
             Console.WriteLine($"File not found: {filename}");
@@ -51,15 +55,9 @@ print ""After if, finished!"";
     private static Parser.Parser CreateParser(string source)
     {
         var rules = GrammarConfigLoader.LoadFromEmbeddedResource("ToyAnalyzer.Config.grammar_rules.json");
-        foreach (var rule in rules.Values)
-        {
-            rule.ComputeFirstSet(rules);
-            rule.ComputeFollowSet(rules, "PROGRAM");
-        }
-        var table = ParserTableGenerator.Generate(rules);
-
+        var table = ParserTableGenerator.GenerateTable(rules);
         var lexer = CreateLexer(source);
-        return new Parser.Parser(lexer, rules, table);
+        return new Parser.Parser(lexer, table);
     }
 
     private static Lexer.Lexer CreateLexer(string source)
