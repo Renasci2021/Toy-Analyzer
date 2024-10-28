@@ -1,4 +1,4 @@
 bin/
-doc/
+doc/*.pdf
 testcases/*.out
-exclude.txt
+*.zip

@@ -1,0 +1,4 @@
+bin\
+doc\report1.3.pdf
+src\
+testcases\

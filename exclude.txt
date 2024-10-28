@@ -1,0 +1,4 @@
+src\ToyAnalyzer\bin\
+src\ToyAnalyzer\obj\
+src\*.user
+src\.gitignore
