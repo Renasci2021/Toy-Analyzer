@@ -1,0 +1,19 @@
+var n;
+input n;
+
+var result;
+result = 1;
+
+if (n < 0) {
+    print "Error: Negative number";
+}
+if (n > -1) {
+    var i;
+    i = 1;
+    while (i < n + 1) {
+        result = result * i;
+        i = i + 1;
+    }
+    print "Factorial is ";
+    print result;
+}

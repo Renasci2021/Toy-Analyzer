@@ -1,0 +1,5 @@
+if (gender == 1) {
+    if (height > 180) {
+        print "A tall man.";
+    }
+}

@@ -1,0 +1,6 @@
+var celsius;
+input celsius;
+
+var fahrenheit;
+fahrenheit  = 32 + celsius * 9 / 5;
+print celsius;
