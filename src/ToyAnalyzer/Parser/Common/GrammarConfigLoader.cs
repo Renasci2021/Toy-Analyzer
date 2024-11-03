@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Text.Json;
 
-namespace ToyAnalyzer.Parser;
+using ToyAnalyzer.Parser.Common;
 
 internal static class GrammarConfigLoader
 {

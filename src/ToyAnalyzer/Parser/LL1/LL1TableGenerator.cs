@@ -1,6 +1,8 @@
-namespace ToyAnalyzer.Parser;
+using ToyAnalyzer.Parser.Common;
 
-internal static class ParserTableGenerator
+namespace ToyAnalyzer.Parser.LL1;
+
+internal static class LL1TableGenerator
 {
     public static Dictionary<(string, string), List<string>> GenerateTable(List<GrammarRule> rules)
     {

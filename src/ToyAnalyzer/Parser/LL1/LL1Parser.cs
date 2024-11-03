@@ -1,12 +1,25 @@
 using System.Xml.Linq;
 using ToyAnalyzer.Lexer;
+using ToyAnalyzer.Parser.Common;
 
-namespace ToyAnalyzer.Parser;
+namespace ToyAnalyzer.Parser.LL1;
 
-internal class Parser(Lexer.Lexer lexer, Dictionary<(string, string), List<string>> parseTable)
+internal class LL1Parser : IParser
 {
-    private readonly Lexer.Lexer _lexer = lexer;
-    private readonly Dictionary<(string, string), List<string>> _parseTable = parseTable;
+    private readonly Lexer.Lexer _lexer;
+    private readonly Dictionary<(string, string), List<string>> _parseTable;
+
+    private LL1Parser(Lexer.Lexer lexer, Dictionary<(string, string), List<string>> parseTable)
+    {
+        _lexer = lexer;
+        _parseTable = parseTable;
+    }
+
+    public static LL1Parser Create(Lexer.Lexer lexer, List<GrammarRule> rules)
+    {
+        var parseTable = LL1TableGenerator.GenerateTable(rules);
+        return new LL1Parser(lexer, parseTable);
+    }
 
     public XElement Parse()
     {

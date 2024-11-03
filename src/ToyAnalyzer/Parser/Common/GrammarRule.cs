@@ -1,4 +1,4 @@
-namespace ToyAnalyzer.Parser;
+namespace ToyAnalyzer.Parser.Common;
 
 internal record GrammarRule
 {
